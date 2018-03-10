@@ -38,51 +38,27 @@ public class MainActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams.MATCH_PARENT));
         FrameLayout.LayoutParams lp1 = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
-        lp1.setMargins(0,20,0,0);
+        lp1.setMargins(0, 20, 0, 0);
         textView1.setLayoutParams(lp1);
 
-//Initializing frame layout
-
-        FrameLayout framelayout = new FrameLayout(this);
-        framelayout.setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
-/*
-        GridLayout gridlayout = new GridLayout(this);
-        gridlayout.setColumnCount(4);
-        gridlayout.setRowCount(4);
-        GridLayout.LayoutParams lp2 = new GridLayout.LayoutParams();
-        gridlayout.setLayoutParams(new AbsListView.LayoutParams(GridLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
-        for(int i = 0; i < 8; ++i) {
-            PieceLayout piece = new PieceLayout(this);
-            piece.setNum(i);
-            gridlayout.addView(piece);
-        }
-*/
-//Adding views to FrameLayout
-
-        for(int x = 0; x < 4; ++x)
-            for(int y = 0; y < 5; ++y)
-            {
-                PieceLayout piece = new PieceLayout(this, x, y);
-                piece.setNum(x*10+y);
-                //framelayout.addView(imageView);
-                //framelayout.addView(textView1);
-                framelayout.addView(piece);
-            }
-        setContentView(framelayout);
+        //Adding views to FrameLayout
+        String state[] = new String[]{
+                "VKkV",
+                "vkkv",
+                "VHhV",
+                "vPPv",
+                "P  P"};
+        Board board = new Board(state);
+        BoardView bv = new BoardView(this, board);
+        setContentView(bv);
     }
-
-
 }
-
-class PieceLayout extends FrameLayout {
-        PieceLayout(Context context, int x, int y)
-        {
+    class BlockView extends FrameLayout {
+        BlockView(Context context, Block block, int boardW, int boardH) {
             super(context);
             label = new TextView(getContext());
             label.setTextSize(32);
-            label.setBackgroundColor(0x33ff0033);
+            label.setBackgroundColor(0xffbc4d05);
             label.setTextColor(0x330D0D0D);
             label.setGravity(Gravity.CENTER);
             //LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -90,25 +66,30 @@ class PieceLayout extends FrameLayout {
             int W = 300;
             int H = 300;
             int G = 10;
-            LayoutParams lp = new LayoutParams(W, H);
-            lp.setMargins(x*(W+G), y*(H+G), (3-x)*(W+G), (4-y)*(H+G));
+            LayoutParams lp = new LayoutParams(W * block.W() - 2*G, H * block.H()-2*G);
+            int x1 = block.x * W + G;
+            int x2 = (block.x + block.W()) * W - G;
+            x2 = boardW * W - x2;
+            int y1 = block.y * H + G;
+            int y2 = (block.y + block.H()) * H - G;
+            y2 = boardH * H - y2;
+            lp.setMargins(x1, y1, x2, y2);
             label.setLayoutParams(lp);
-            setNum(0);
+            label.setText(block.t.toString());
             addView(label);
+        }
+        TextView label;
     }
 
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-        if (num <= 0) {
-            label.setText("");
-        } else {
-            label.setText(num + "");
+    class BoardView extends FrameLayout {
+        BoardView(Context context, Board board) {
+            super(context);
+            ;
+            setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT));
+            for (int i = 0; i < board.blocks.length; ++i) {
+                BlockView b = new BlockView(context, board.blocks[i], board.W, board.H);
+                addView(b);
+            }
         }
     }
-    int num;
-    TextView label;
-}
