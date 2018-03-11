@@ -20,6 +20,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -76,8 +77,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        //((TextView)v).setText("C");\
-        board.movePiece(((BlockView)v).id);
+       //((TextView)v).setText("C");
+       board.movePiece(((BlockView)v).id, Board.Direction.None);
+        BoardView bv = new BoardView(this, board, windowSize);
+        setContentView(bv);
+    }
+    public void movePiece(View v, Board.Direction direction)
+    {
+        board.movePiece(((BlockView)v).id, direction);
         BoardView bv = new BoardView(this, board, windowSize);
         setContentView(bv);
     }
@@ -87,18 +94,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 // one block of the game
     class BlockView extends TextView {
-        BlockView(Context context, Block b, int index, int GridWidth, int GridHeight) {
+        BlockView(Context context, Block b, int index, int gridWidth, int gridHeight) {
             super(context);
             block = b;
             id = index;
             setTextSize(32);
-            setBackgroundColor(0xffbc4d05);
+            setBackgroundColor(0x88ffa54f);
             setTextColor(0x330D0D0D);
             setGravity(Gravity.CENTER);
-            int G = 10;
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(GridWidth * block.W() - 2*G, GridHeight * block.H()-2*G);
-            int x1 = block.x * GridWidth + G;
-            int y1 = block.y * GridHeight + G;
+            int G = gridHeight / 50;
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(gridWidth * block.W() - 2*G, gridHeight * block.H()-2*G);
+            int x1 = block.x * gridWidth + G;
+            int y1 = block.y * gridHeight + G;
             lp.setMargins(x1, y1, 0, 0);
             setLayoutParams(lp);
             setText(block.t.toString());
@@ -108,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     class BoardView extends FrameLayout {
-        BoardView(Context context, Board board, Point windowSize) {
+        BoardView(final Context context, Board board, Point windowSize) {
             super(context);
             int windowWidth = windowSize.x;
             int windowHeight = windowSize.y;
@@ -116,30 +123,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int gridHeight = windowHeight / board.H;
             gridWidth = Math.min(gridWidth, gridHeight);
             gridHeight = gridWidth;
+
             setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT));
+            setBackgroundColor(0xffbc4d05);
             for (int i = 0; i < board.blocks.length; ++i) {
                 BlockView b = new BlockView(context, board.blocks[i], i, gridWidth, gridHeight);
-                b.setOnClickListener((OnClickListener) context);
-                /*
-                setOnTouchListener(new OnTouchListener() {
-                    public boolean onTouch(View v, MotionEvent event) {
-                        int action = MotionEventCompat.getActionMasked(event);
-
-                        switch(action) {
-                            case (MotionEvent.ACTION_DOWN):
-                                Log.d(DEBUG_TAG, "Action was DOWN");
-                                return true;
-                            case (MotionEvent.ACTION_LEFT):
-                                Log.d(DEBUG_TAG, "Action was MOVE");
-                                return true;
-                            case (MotionEvent.ACTION_UP):
-                                Log.d(DEBUG_TAG, "Action was UP");
-                                return true;
+                boolean useClick = false;
+                if(useClick)
+                    b.setOnClickListener((OnClickListener) context);
+                else // use swipe
+                    b.setOnTouchListener(new OnSwipeTouchListener(context) {
+                        public boolean onSwipeTop() {
+                            Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
+                            ((MainActivity)context).movePiece(view, Board.Direction.U);
+                            return true;
                         }
-                        return true;
-                    }
-                    */
+                        public boolean onSwipeRight() {
+                            Toast.makeText(context, "right", Toast.LENGTH_SHORT).show();
+                            ((MainActivity)context).movePiece(view, Board.Direction.R);
+                            return true;
+                        }
+                        public boolean onSwipeLeft() {
+                            Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
+                            ((MainActivity)context).movePiece(view, Board.Direction.L);
+                            return true;
+                        }
+                        public boolean onSwipeBottom() {
+                            Toast.makeText(context, "bottom", Toast.LENGTH_SHORT).show();
+                            ((MainActivity)context).movePiece(view, Board.Direction.D);
+                            return true;
+                        }
+                    });
                 addView(b);
             }
         }

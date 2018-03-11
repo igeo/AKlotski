@@ -27,8 +27,8 @@ public class Board extends Object {
             }
         }
     }
-    enum Direction {U, D, L, R};
-    public void movePiece(int index)
+    enum Direction {U, D, L, R, None};
+    public void movePiece(int index, Direction d)
     {
         // pupulate board;
         int [][] board = new int [H][W];
@@ -79,17 +79,23 @@ public class Board extends Object {
             if (open)
                 direction.add(Direction.R);
         }
-        if(direction.size() > 0)
+
+        if(d == Direction.None && direction.size() > 0) // click, pick one passible move
         {
             Random rand = new Random();
             int value = rand.nextInt(direction.size());
-            Direction d = direction.get(value);
-            switch (d) {
-                case U :  --b.y; break;
-                case D :  ++b.y; break;
-                case L :  --b.x; break;
-                case R :  ++b.x; break;
-            }
+            d = direction.get(value);
+        }
+        else // swipe, check if the move exist
+        {
+            if(!direction.contains(d))
+                return;
+        }
+        switch (d) {
+            case U: --b.y; break;
+            case D: ++b.y; break;
+            case L: --b.x; break;
+            case R: ++b.x; break;
         }
     }
     static final int W = 4;
