@@ -28,7 +28,7 @@ public class Board extends Object {
         }
     }
     enum Direction {U, D, L, R, None};
-    public void movePiece(int index, Direction d)
+    public boolean movePiece(int index, Direction d)
     {
         // pupulate board;
         int [][] board = new int [H][W];
@@ -89,7 +89,7 @@ public class Board extends Object {
         else // swipe, check if the move exist
         {
             if(!direction.contains(d))
-                return;
+                return false;
         }
         switch (d) {
             case U: --b.y; break;
@@ -97,6 +97,7 @@ public class Board extends Object {
             case L: --b.x; break;
             case R: ++b.x; break;
         }
+        return true;
     }
     static final int W = 4;
     static final int H = 5;

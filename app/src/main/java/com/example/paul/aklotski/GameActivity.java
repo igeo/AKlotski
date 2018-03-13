@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //Adding views to FrameLayout
+
         ArrayList<String[]> games = new  ArrayList<String[]>();
         games.add(new String[]{
                 "KkHh",
@@ -52,7 +54,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 "vkkP",
                 "VHhV",
                 "vPVv",
-                " PV "});
+                " Pv "});
         games.add( new String[]{
                 "VKkP",
                 "vkkP",
@@ -71,6 +73,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 "VHhP",
                 "vVVP",
                 " vv "});
+        games.add( new String[]{
+                "PHhP",
+                "VKkV",
+                "vkkv",
+                "VPPV",
+                "v  v"});
+        games.add( new String[]{
+                "VHhP",
+                "vKkV",
+                "Vkkv",
+                "vPVP",
+                " Pv "});
 
         Intent intent = getIntent();
         int gameId = intent.getIntExtra("GAMEID", 0);
@@ -78,7 +92,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         String game [] = games.get(gameId);
         board = new Board(game);
         BoardView bv = new BoardView(this, board, windowSize);
-        setContentView(bv);
+
+        setContentView(R.layout.activity_game);
+        layoutBoard = findViewById(R.id.board);
+        layoutBoard.addView(bv);
+        layoutBoard.requestLayout();
+        //setContentView(bv);
+        viewSteps = findViewById(R.id.steps);
     }
 
     @Override
@@ -90,12 +110,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void movePiece(View v, Board.Direction direction)
     {
-        board.movePiece(((BlockView)v).id, direction);
+        if(board.movePiece(((BlockView)v).id, direction))
+            viewSteps.setText("step " + ++current_step);
         BoardView bv = new BoardView(this, board, windowSize);
-        setContentView(bv);
+        layoutBoard.removeAllViews();
+        layoutBoard.addView(bv);
+        layoutBoard.requestLayout();
+
+        //setContentView(bv);
     }
     Board board;
     Point windowSize = new Point();
+    LinearLayout layoutBoard;
+    TextView viewSteps;
+    int current_step;
 }
 
 // one block of the game
