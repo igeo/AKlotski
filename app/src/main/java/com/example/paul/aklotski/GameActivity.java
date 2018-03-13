@@ -2,6 +2,7 @@ package com.example.paul.aklotski;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,8 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
@@ -33,67 +32,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             windowSize.x = display.getWidth();
             windowSize.y = display.getHeight();
         }
-
-        //Adding views to FrameLayout
-
-        ArrayList<String[]> games = new  ArrayList<String[]>();
-        games.add(new String[]{
-                "KkHh",
-                "kkHh",
-                "HhHh",
-                "PPHh",
-                "P  P"});
-        games.add( new String[]{
-                "VKkV",
-                "vkkv",
-                "VHhV",
-                "vPPv",
-                "P  P"});
-        games.add( new String[]{
-                "VKkP",
-                "vkkP",
-                "VHhV",
-                "vPVv",
-                " Pv "});
-        games.add( new String[]{
-                "VKkP",
-                "vkkP",
-                "VHhV",
-                "vPVv",
-                " Pv "});
-        games.add( new String[]{
-                "PKkP",
-                "PkkP",
-                " Hh ",
-                "VVVV",
-                "vvvv"});
-        games.add( new String[]{
-                "VKkP",
-                "vkkP",
-                "VHhP",
-                "vVVP",
-                " vv "});
-        games.add( new String[]{
-                "PHhP",
-                "VKkV",
-                "vkkv",
-                "VPPV",
-                "v  v"});
-        games.add( new String[]{
-                "VHhP",
-                "vKkV",
-                "Vkkv",
-                "vPVP",
-                " Pv "});
-
-        Intent intent = getIntent();
+       Intent intent = getIntent();
         int gameId = intent.getIntExtra("GAMEID", 0);
-        gameId %= games.size();
-        String game [] = games.get(gameId);
+
+        String game [] =  GameManager.getGame(gameId);
         board = new Board(game);
         BoardView bv = new BoardView(this, board, windowSize);
 
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.game_activity);
         layoutBoard = findViewById(R.id.board);
         layoutBoard.addView(bv);
         layoutBoard.requestLayout();
@@ -133,7 +79,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             block = b;
             id = index;
             setTextSize(32);
-            setBackgroundColor(0x88ffa54f);
+
+            int color = Color.BLACK;
+            switch (block.t){
+                case K: color = 0xffe24d3b; break;
+                case H: color = 0xff4396dc; break;
+                case V: color = 0xffedc500; break;
+                case P: color = 0xff34af5e; break;
+            }
+            setBackgroundColor(color);
             setTextColor(0x330D0D0D);
             setGravity(Gravity.CENTER);
             int G = gridHeight / 50;
@@ -160,7 +114,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
             setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                     FrameLayout.LayoutParams.MATCH_PARENT));
-            setBackgroundColor(0xffbc4d05);
+            //setBackgroundColor(0xffbc4d05);
+
             for (int i = 0; i < board.blocks.length; ++i) {
                 BlockView b = new BlockView(context, board.blocks[i], i, gridWidth, gridHeight);
                 boolean useClick = false;

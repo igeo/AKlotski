@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(framelayout);
         setContentView(R.layout.game_selection);
         TableLayout gt = findViewById(R.id.game_table);
-        for(int gid = 0; gid < 8; ++gid)
+        for(int gid = 0; gid < GameManager.getNumOfGames(); ++gid)
         {
             TableRow row= new TableRow(this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
