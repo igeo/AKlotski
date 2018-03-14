@@ -67,7 +67,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     Board board;
     Point windowSize = new Point();
-    LinearLayout layoutBoard;
+    FrameLayout layoutBoard;
     TextView viewSteps;
     int current_step;
 }

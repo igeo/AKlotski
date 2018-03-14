@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,84 +7,77 @@
     android:orientation="vertical"
     tools:context="com.example.paul.aklotski.GameActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/board"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="300"
-        android:orientation="horizontal"></LinearLayout>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintDimensionRatio="H,4:5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </FrameLayout>
 
     <LinearLayout
-        android:layout_weight="1100"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_weight="10"
+        android:baselineAligned="false"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/board">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#bc4d05"
+            android:text="1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:orientation="horizontal">
+            android:text="3"
+            android:textAlignment="center" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fab_margin"
-                android:background="#bc4d05"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fab_margin"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fab_margin"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fab_margin"
-                android:background="#bc4d05"
-                android:textAlignment="center" />
-        </LinearLayout>
+            android:layout_weight="1"
+            android:background="#bc4d05"
+            android:text="4"
+            android:textAlignment="center" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="900"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider">
+
         <TextView
             android:id="@+id/steps"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="step 0"
+            android:gravity="center_vertical"
             android:textAlignment="center"
-            android:textSize="32dp" />
+            android:textSize="32sp" />
     </LinearLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
