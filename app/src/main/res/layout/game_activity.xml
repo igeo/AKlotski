@@ -7,13 +7,36 @@
     android:orientation="vertical"
     tools:context="com.example.paul.aklotski.GameActivity">
 
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/board"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:background="#bc4d05"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="AKlotski"
+            android:textAlignment="center"
+            android:textSize="32sp" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/board"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="10"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintDimensionRatio="H,4:5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +51,7 @@
         android:baselineAligned="false"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/bottom"
+        app:layout_constraintBottom_toTopOf="@id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/board">
@@ -38,14 +61,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#bc4d05"
-            android:text="1"
             android:textAlignment="center" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:text="3"
             android:textAlignment="center" />
 
         <TextView
@@ -53,11 +74,22 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#bc4d05"
-            android:text="4"
             android:textAlignment="center" />
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#bc4d05"
+        android:text="0"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@id/bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="0dp"
@@ -68,7 +100,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider">
+        app:layout_constraintTop_toBottomOf="@id/divider2">
 
         <TextView
             android:id="@+id/steps"
