@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -32,7 +33,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             windowSize.x = display.getWidth();
             windowSize.y = display.getHeight();
         }
-       Intent intent = getIntent();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int margin = 20;
+        windowSize.x -= margin * 2 * metrics.density;
+        windowSize.y -= margin * 2 * metrics.density;
+
+        Intent intent = getIntent();
         int gameId = intent.getIntExtra("GAMEID", 0);
 
         String game [] =  GameManager.getGame(gameId);
