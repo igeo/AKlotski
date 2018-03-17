@@ -99,6 +99,17 @@ public class Board extends Object {
         }
         return true;
     }
+    boolean hasWon() {
+        for(int i = 0; i < blocks.length; ++i){
+            if(blocks[i].t == Block.Type.K) {
+                if(blocks[i].x == 1 && blocks[i].y == 3)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        return false;
+    }
     static final int W = 4;
     static final int H = 5;
     Block[] blocks = new Block[10];

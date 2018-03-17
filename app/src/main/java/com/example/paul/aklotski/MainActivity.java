@@ -1,5 +1,8 @@
 package com.example.paul.aklotski;
 
+import android.arch.persistence.room.Database;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by Paul on 3/11/2018.
@@ -24,29 +29,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
         intent.putExtra("GAMEID", 1);
 
-        FrameLayout framelayout = new FrameLayout(this);
-        framelayout.setLayoutParams(new AbsListView.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "player_database").allowMainThreadQueries().build();
 
-        for(int gid = 0; gid < 8; ++gid)
-            {
-                int W = 3;
-                int y = gid / W;
-                int x = gid - y * W;
-                PieceLayout piece = new PieceLayout(this, x, y);
-                piece.setNum(gid);
-                piece.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int gameId = ((PieceLayout)v).getNum();
-                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                    intent.putExtra("GAMEID", gameId);
-                    startActivity(intent);
-                    }
-                });
-                framelayout.addView(piece);
-            }
-        //setContentView(framelayout);
         setContentView(R.layout.game_selection);
         TableLayout gt = findViewById(R.id.game_table);
         for(int gid = 0; gid < GameManager.getNumOfGames(); ++gid)
@@ -67,9 +52,18 @@ public class MainActivity extends AppCompatActivity {
             text.setPadding(5,0,5,0);
             row.addView(text);
 
+            // Your best
+            List<MyGame> games = db.MyGameDao().loadAllByGameId(gid);
+            int best = -1;
+            for(MyGame game : games){
+                if(best >= 0) {
+                    best = Math.min(best, game.steps);
+                }else
+                    best = game.steps;
+            }
             text = new TextView(this);
             text.setTextSize(32);
-            text.setText("-1" );
+            text.setText(best > 0 ? "" + best : "-");
             text.setPadding(5,0,5,0);
             row.addView(text);
 
@@ -95,62 +89,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
-
-class TextViewWithnumb extends android.support.v7.widget.AppCompatTextView {
-    TextViewWithnumb(Context context, int x, int y)
-    {
-        super(context);
-        setTextSize(32);
-        setBackgroundColor(0x33ff0033);
-        setTextColor(0x330D0D0D);
-        setGravity(Gravity.CENTER);
-        int W = 200;
-        int H = 200;
-        int G = 5;
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(W, H);
-        lp.setMargins(x*(W+G), y*(H+G), 0, 0);
-        setLayoutParams(lp);
-        setNum(0);
-    }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-        setText(num + "");
-    }
-    int num;
-}
-
-
-class PieceLayout extends android.support.v7.widget.AppCompatTextView {
-    PieceLayout(Context context, int x, int y)
-    {
-        super(context);
-        setTextSize(32);
-        setBackgroundColor(0x33ff0033);
-        setTextColor(0x330D0D0D);
-        setGravity(Gravity.CENTER);
-        int W = 200;
-        int H = 200;
-        int G = 5;
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(W, H);
-        lp.setMargins(x*(W+G), y*(H+G), 0, 0);
-        setLayoutParams(lp);
-        setNum(0);
-      }
-
-    public int getNum() {
-        return num;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-        setText(num + "");
-    }
-    int num;
-}
-
 

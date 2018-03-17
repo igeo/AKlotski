@@ -1,5 +1,6 @@
 package com.example.paul.aklotski;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,11 +41,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         windowSize.y -= margin * 2 * metrics.density;
 
         Intent intent = getIntent();
-        int gameId = intent.getIntExtra("GAMEID", 0);
+        gameId = intent.getIntExtra("GAMEID", 0);
 
         String game [] =  GameManager.getGame(gameId);
         board = new Board(game);
-        BoardView bv = new BoardView(this, board, windowSize);
+        BoardView bv = new BoardView(this, board, windowSize, false);
 
         setContentView(R.layout.game_activity);
         layoutBoard = findViewById(R.id.board);
@@ -56,23 +57,31 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-       //((TextView)v).setText("C");
-       board.movePiece(((BlockView)v).id, Board.Direction.None);
-        BoardView bv = new BoardView(this, board, windowSize);
-        setContentView(bv);
+        movePiece(v, Board.Direction.None);
     }
     public void movePiece(View v, Board.Direction direction)
     {
         if(board.movePiece(((BlockView)v).id, direction))
             viewSteps.setText("step " + ++current_step);
-        BoardView bv = new BoardView(this, board, windowSize);
+        boolean won = false;
+        if(board.hasWon())
+        {
+            won = true;
+            AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                    AppDatabase.class, "player_database").allowMainThreadQueries().build();
+            MyGame game = new MyGame();
+            game.gameId = gameId;
+            game.won = true;
+            game.steps = current_step;
+            db.MyGameDao().insert(game);
+        }
+        BoardView bv = new BoardView(this, board, windowSize, won);
         layoutBoard.removeAllViews();
         layoutBoard.addView(bv);
         layoutBoard.requestLayout();
-
-        //setContentView(bv);
     }
     Board board;
+    int gameId;
     Point windowSize = new Point();
     FrameLayout layoutBoard;
     TextView viewSteps;
@@ -80,7 +89,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 }
 
 // one block of the game
-    class BlockView extends TextView {
+    class BlockView extends  android.support.v7.widget.AppCompatTextView  {
         BlockView(Context context, Block b, int index, int gridWidth, int gridHeight) {
             super(context);
             block = b;
@@ -110,7 +119,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     class BoardView extends FrameLayout {
-        BoardView(final Context context, Board board, Point windowSize) {
+        BoardView(final Context context, Board board, Point windowSize, boolean won) {
             super(context);
             int windowWidth = windowSize.x;
             int windowHeight = windowSize.y;
@@ -124,33 +133,40 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             //setBackgroundColor(0xffbc4d05);
 
             for (int i = 0; i < board.blocks.length; ++i) {
+                //if(won && board.blocks[i].t == Block.Type.K) continue;
                 BlockView b = new BlockView(context, board.blocks[i], i, gridWidth, gridHeight);
-                boolean useClick = false;
-                if(useClick)
-                    b.setOnClickListener((OnClickListener) context);
-                else // use swipe
-                    b.setOnTouchListener(new OnSwipeTouchListener(context) {
-                        public boolean onSwipeTop() {
-                            Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
-                            ((GameActivity)context).movePiece(view, Board.Direction.U);
-                            return true;
-                        }
-                        public boolean onSwipeRight() {
-                            Toast.makeText(context, "right", Toast.LENGTH_SHORT).show();
-                            ((GameActivity)context).movePiece(view, Board.Direction.R);
-                            return true;
-                        }
-                        public boolean onSwipeLeft() {
-                            Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
-                            ((GameActivity)context).movePiece(view, Board.Direction.L);
-                            return true;
-                        }
-                        public boolean onSwipeBottom() {
-                            Toast.makeText(context, "bottom", Toast.LENGTH_SHORT).show();
-                            ((GameActivity)context).movePiece(view, Board.Direction.D);
-                            return true;
-                        }
-                    });
+
+                if(!won) {
+                    boolean useClick = true;
+                    if (useClick)
+                        b.setOnClickListener((OnClickListener) context);
+                    else // use swipe
+                        b.setOnTouchListener(new OnSwipeTouchListener(context) {
+                            public boolean onSwipeTop() {
+                                Toast.makeText(context, "top", Toast.LENGTH_SHORT).show();
+                                ((GameActivity) context).movePiece(view, Board.Direction.U);
+                                return true;
+                            }
+
+                            public boolean onSwipeRight() {
+                                Toast.makeText(context, "right", Toast.LENGTH_SHORT).show();
+                                ((GameActivity) context).movePiece(view, Board.Direction.R);
+                                return true;
+                            }
+
+                            public boolean onSwipeLeft() {
+                                Toast.makeText(context, "left", Toast.LENGTH_SHORT).show();
+                                ((GameActivity) context).movePiece(view, Board.Direction.L);
+                                return true;
+                            }
+
+                            public boolean onSwipeBottom() {
+                                Toast.makeText(context, "bottom", Toast.LENGTH_SHORT).show();
+                                ((GameActivity) context).movePiece(view, Board.Direction.D);
+                                return true;
+                            }
+                        });
+                }
                 addView(b);
             }
         }

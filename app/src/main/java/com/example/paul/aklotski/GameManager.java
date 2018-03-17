@@ -81,7 +81,12 @@ public class GameManager extends Object {
                 "HhPP",
                 "HhKk",
                 "  kk"});
-
+        games.add(new String[]{
+                "PVVV",
+                "Pvvv",
+                "HhHh",
+                "PPKk",
+                "  kk"});
     }
     static ArrayList<String[]> games;
 
