@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
  * the record of my game play
  */
 @Entity //(tableName = "my_game")
-public class MyGame extends Object {
+public class GamePlayed extends Object {
     @PrimaryKey (autoGenerate = true)
     int sn;
 

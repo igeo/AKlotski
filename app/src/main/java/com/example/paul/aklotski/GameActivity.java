@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +68,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             won = true;
             AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                     AppDatabase.class, "player_database").allowMainThreadQueries().build();
-            MyGame game = new MyGame();
+            GamePlayed game = new GamePlayed();
             game.gameId = gameId;
             game.won = true;
             game.steps = current_step;

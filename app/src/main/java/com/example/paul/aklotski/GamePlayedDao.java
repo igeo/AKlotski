@@ -12,16 +12,16 @@ import java.util.List;
  */
 
 @Dao
-public interface MyGameDao {
-    @Query("SELECT * FROM MyGame")
-    List<MyGame> getAll();
+public interface GamePlayedDao {
+    @Query("SELECT * FROM GamePlayed")
+    List<GamePlayed> getAll();
 
-    @Query("SELECT * FROM MyGame WHERE gameId IS :Id")
-    List<MyGame> loadAllByGameId(int Id);
+    @Query("SELECT * FROM GamePlayed WHERE gameId IS :Id")
+    List<GamePlayed> loadAllByGameId(int Id);
 
     @Insert
-    void insert(MyGame game);
+    void insert(GamePlayed game);
 
     @Delete
-    void delete(MyGame game);
+    void delete(GamePlayed game);
 }

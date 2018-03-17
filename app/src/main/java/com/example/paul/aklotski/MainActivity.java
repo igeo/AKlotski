@@ -1,16 +1,10 @@
 package com.example.paul.aklotski;
 
-import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -53,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
             row.addView(text);
 
             // Your best
-            List<MyGame> games = db.MyGameDao().loadAllByGameId(gid);
+            List<GamePlayed> games = db.MyGameDao().loadAllByGameId(gid);
             int best = -1;
-            for(MyGame game : games){
+            for(GamePlayed game : games){
                 if(best >= 0) {
                     best = Math.min(best, game.steps);
                 }else
