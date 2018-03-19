@@ -107,20 +107,28 @@
 
         <Button
             android:id="@+id/undo"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="undo"
             android:textAlignment="center" />
 
         <TextView
             android:id="@+id/steps"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="step 0"
             android:textAlignment="center"
             android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/restart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Restart" />
 
     </LinearLayout>
 

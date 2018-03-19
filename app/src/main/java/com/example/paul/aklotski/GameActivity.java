@@ -44,17 +44,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         gameId = intent.getIntExtra("GAMEID", 0);
 
-        String game [] =  GameManager.getGame(gameId);
-        board = new Board(game);
-
         setContentView(R.layout.game_activity);
-        updateboard();
+        restart();
         Button undoButton = findViewById(R.id.undo);
         undoButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), "back", Toast.LENGTH_SHORT).show();
                 ((GameActivity)(v.getContext())).undo();
         }});
+        Button restButton = findViewById(R.id.restart);
+        restButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "restart", Toast.LENGTH_SHORT).show();
+                ((GameActivity)(v.getContext())).restart();
+            }});
     }
 
     @Override
@@ -66,6 +69,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             return;
         board = history.get(history.size()-1);
         history.remove(history.size()-1);
+        updateboard();
+    }
+    private void restart() {
+        history.clear();
+        String game [] =  GameManager.getGame(gameId);
+        board = new Board(game);
         updateboard();
     }
     private void updateboard(){
