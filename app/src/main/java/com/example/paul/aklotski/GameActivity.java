@@ -12,6 +12,8 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -78,7 +80,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         updateboard();
     }
     private void updateboard(){
-        BoardView bv = new BoardView(this, board, windowSize, hasWon);
+        BoardView bv = new BoardView(this, board, windowSize, board.hasWon());
         FrameLayout layoutBoard = findViewById(R.id.board);
         layoutBoard.removeAllViews();
         layoutBoard.addView(bv);
@@ -94,7 +96,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(board.hasWon())
         {
-            hasWon = true;
             AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                     AppDatabase.class, "player_database").allowMainThreadQueries().build();
             GamePlayed game = new GamePlayed();
@@ -109,7 +110,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<Board> history = new ArrayList<Board>();
     int gameId;
     Point windowSize = new Point();
-    boolean hasWon = false;
 }
 
 // one block of the game
@@ -157,9 +157,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             //setBackgroundColor(0xffbc4d05);
 
             for (int i = 0; i < board.blocks.length; ++i) {
-                //if(won && board.blocks[i].t == Block.Type.K) continue;
                 BlockView b = new BlockView(context, board.blocks[i], i, gridWidth, gridHeight);
-
+                if(won && board.blocks[i].t == Block.Type.K) {
+                    b.setText("You have won!");
+                    Animation anim = new AlphaAnimation(0.0f, 1.0f);
+                    anim.setDuration(500); //You can manage the time of the blink with this parameter
+                    anim.setStartOffset(100);
+                    anim.setRepeatMode(Animation.REVERSE);
+                    anim.setRepeatCount(Animation.INFINITE);
+                    b.startAnimation(anim);
+                }
                 if(!won) {
                     boolean useClick = false;
                     if (useClick)
