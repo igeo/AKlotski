@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +46,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         String game [] =  GameManager.getGame(gameId);
         board = new Board(game);
-        BoardView bv = new BoardView(this, board, windowSize, false);
 
         setContentView(R.layout.game_activity);
-        layoutBoard = findViewById(R.id.board);
-        layoutBoard.addView(bv);
-        layoutBoard.requestLayout();
-        //setContentView(bv);
-        viewSteps = findViewById(R.id.steps);
+        updateboard();
         Button undoButton = findViewById(R.id.undo);
         undoButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -76,9 +70,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void updateboard(){
         BoardView bv = new BoardView(this, board, windowSize, hasWon);
+        FrameLayout layoutBoard = findViewById(R.id.board);
         layoutBoard.removeAllViews();
         layoutBoard.addView(bv);
         layoutBoard.requestLayout();
+        TextView viewSteps = findViewById(R.id.steps);
         viewSteps.setText("step " + history.size());
     }
     public void movePiece(View v, Board.Direction direction)
@@ -104,8 +100,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<Board> history = new ArrayList<Board>();
     int gameId;
     Point windowSize = new Point();
-    FrameLayout layoutBoard;
-    TextView viewSteps;
     boolean hasWon = false;
 }
 
@@ -158,7 +152,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 BlockView b = new BlockView(context, board.blocks[i], i, gridWidth, gridHeight);
 
                 if(!won) {
-                    boolean useClick = true;
+                    boolean useClick = false;
                     if (useClick)
                         b.setOnClickListener((OnClickListener) context);
                     else // use swipe
