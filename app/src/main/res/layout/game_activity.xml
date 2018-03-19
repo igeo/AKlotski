@@ -92,26 +92,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider" />
+
     <LinearLayout
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider2">
 
+        <Button
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="undo"
+            android:textAlignment="center" />
+
         <TextView
             android:id="@+id/steps"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="step 0"
+            android:layout_weight="1"
             android:gravity="center_vertical"
+            android:text="step 0"
             android:textAlignment="center"
             android:textSize="32sp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

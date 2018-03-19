@@ -13,10 +13,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
@@ -52,39 +55,58 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         layoutBoard.requestLayout();
         //setContentView(bv);
         viewSteps = findViewById(R.id.steps);
+        Button undoButton = findViewById(R.id.undo);
+        undoButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "back", Toast.LENGTH_SHORT).show();
+                ((GameActivity)(v.getContext())).undo();
+        }});
     }
 
     @Override
     public void onClick(View v) {
         movePiece(v, Board.Direction.None);
     }
+    private void undo() {
+        if(history.isEmpty())
+            return;
+        board = history.get(history.size()-1);
+        history.remove(history.size()-1);
+        updateboard();
+    }
+    private void updateboard(){
+        BoardView bv = new BoardView(this, board, windowSize, hasWon);
+        layoutBoard.removeAllViews();
+        layoutBoard.addView(bv);
+        layoutBoard.requestLayout();
+        viewSteps.setText("step " + history.size());
+    }
     public void movePiece(View v, Board.Direction direction)
     {
-        if(board.movePiece(((BlockView)v).id, direction))
-            viewSteps.setText("step " + ++current_step);
-        boolean won = false;
+        Board previous = board.clone();
+        if(board.movePiece(((BlockView)v).id, direction)) {
+            history.add(previous);
+        }
         if(board.hasWon())
         {
-            won = true;
+            hasWon = true;
             AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                     AppDatabase.class, "player_database").allowMainThreadQueries().build();
             GamePlayed game = new GamePlayed();
             game.gameId = gameId;
             game.won = true;
-            game.steps = current_step;
+            game.steps = history.size();
             db.MyGameDao().insert(game);
         }
-        BoardView bv = new BoardView(this, board, windowSize, won);
-        layoutBoard.removeAllViews();
-        layoutBoard.addView(bv);
-        layoutBoard.requestLayout();
+        updateboard();
     }
     Board board;
+    ArrayList<Board> history = new ArrayList<Board>();
     int gameId;
     Point windowSize = new Point();
     FrameLayout layoutBoard;
     TextView viewSteps;
-    int current_step;
+    boolean hasWon = false;
 }
 
 // one block of the game

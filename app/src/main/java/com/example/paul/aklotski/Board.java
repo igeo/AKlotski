@@ -9,6 +9,7 @@ import java.util.Random;
  */
 
 public class Board extends Object {
+    public Board() {};
     public Board(String s[])
     {
         int counter = 0;
@@ -26,6 +27,13 @@ public class Board extends Object {
                 }
             }
         }
+    }
+    public Board clone() {
+        Board cloned = new Board();
+        cloned.blocks = new Block[blocks.length];
+        for(int i = 0; i < blocks.length; ++i)
+            cloned.blocks[i] = blocks[i].clone();
+        return cloned;
     }
     enum Direction {U, D, L, R, None};
     public boolean movePiece(int index, Direction d)
@@ -113,5 +121,4 @@ public class Board extends Object {
     static final int W = 4;
     static final int H = 5;
     Block[] blocks = new Block[10];
-    //char [][] board;
 }

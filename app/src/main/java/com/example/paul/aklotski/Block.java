@@ -22,6 +22,10 @@ public class Block extends Object {
         }
         return Type.P;
     }
+    public Block clone() {
+        return new Block(t, x, y);
+    }
+
     Type t; // type
     int x; // location x
     int y; // locatoin y
