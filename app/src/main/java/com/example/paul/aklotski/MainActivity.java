@@ -1,6 +1,8 @@
 package com.example.paul.aklotski;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +25,17 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
         intent.putExtra("GAMEID", 1);
 
+
+        RoomDatabase.Callback rdc = new RoomDatabase.Callback(){
+            public void onCreate (SupportSQLiteDatabase db){
+                // do something after database has been created
+            }
+            public void onOpen (SupportSQLiteDatabase db){
+                //do something every time database is open
+            }
+        };
         AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "player_database").allowMainThreadQueries().build();
+                AppDatabase.class, "player_database").allowMainThreadQueries().addCallback(rdc).build();
 
         setContentView(R.layout.game_selection);
         TableLayout gt = findViewById(R.id.game_table);

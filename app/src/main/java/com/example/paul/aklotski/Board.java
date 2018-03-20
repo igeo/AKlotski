@@ -10,7 +10,16 @@ import java.util.Random;
 
 public class Board extends Object {
     public Board() {};
-    public Board(String s[])
+    public Board(String s) {
+        String ss[] = new String[H];
+        for(int i = 0; i< H; ++i)
+            ss[i] = s.substring(i*W, i*W+W);
+        init(ss);
+    }
+    public Board(String s[]) {
+        init(s);
+    }
+    private void init(String s[])
     {
         int counter = 0;
         for(int y = 0; y < H; ++y) {

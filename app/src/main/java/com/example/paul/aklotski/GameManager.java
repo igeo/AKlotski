@@ -7,17 +7,17 @@ import java.util.ArrayList;
  */
 
 public class GameManager extends Object {
-    public static ArrayList<String[]> getAllGames() {
+    public static ArrayList<String> getAllGames() {
         init();
         return games;
     }
-
+    static ArrayList<String> games;
     public static int getNumOfGames() {
         init();
         return games.size();
     }
 
-    public static String[] getGame(int id) {
+    public static String getGame(int id) {
         init();
         return games.get(id);
     }
@@ -25,69 +25,16 @@ public class GameManager extends Object {
     {
         if(games != null)
             return;
-        games = new ArrayList<String[]>();
-        games.add(new String[]{
-                "KkHh",
-                "kkHh",
-                "HhHh",
-                "PPHh",
-                "P  P"});
-        games.add(new String[]{
-                "VKkV",
-                "vkkv",
-                "VHhV",
-                "vPPv",
-                "P  P"});
-        games.add(new String[]{
-                "VKkP",
-                "vkkP",
-                "VHhV",
-                "vPVv",
-                " Pv "});
-        games.add(new String[]{
-                "VKkP",
-                "vkkP",
-                "VHhV",
-                "vPVv",
-                " Pv "});
-        games.add(new String[]{
-                "PKkP",
-                "PkkP",
-                " Hh ",
-                "VVVV",
-                "vvvv"});
-        games.add(new String[]{
-                "VKkP",
-                "vkkP",
-                "VHhP",
-                "vVVP",
-                " vv "});
-        games.add(new String[]{
-                "PHhP",
-                "VKkV",
-                "vkkv",
-                "VPPV",
-                "v  v"});
-        games.add(new String[]{
-                "VHhP",
-                "vKkV",
-                "Vkkv",
-                "vPVP",
-                " Pv "});
-
-        games.add(new String[]{
-                "PVVV",
-                "Pvvv",
-                "HhPP",
-                "HhKk",
-                "  kk"});
-        games.add(new String[]{
-                "PVVV",
-                "Pvvv",
-                "HhHh",
-                "PPKk",
-                "  kk"});
+        games = new ArrayList<String>();
+        games.add(new String("KkHhkkHhHhHhPPHhP  P"));
+        games.add(new String("VKkVvkkvVHhVvPPvP  P"));
+        games.add(new String("VKkPvkkPVHhVvPVv Pv "));
+        games.add(new String("VKkPvkkPVHhVvPVv Pv "));
+        games.add(new String("PKkPPkkP Hh VVVVvvvv"));
+        games.add(new String("VKkPvkkPVHhPvVVP vv "));
+        games.add(new String("PHhPVKkVvkkvVPPVv  v"));
+        games.add(new String("VHhPvKkVVkkvvPVP Pv "));
+        games.add(new String("PVVVPvvvHhPPHhKk  kk"));
+        games.add(new String("PVVVPvvvHhHhPPKk  kk"));
     }
-    static ArrayList<String[]> games;
-
 }
