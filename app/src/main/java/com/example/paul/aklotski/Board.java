@@ -127,6 +127,37 @@ public class Board extends Object {
         }
         return false;
     }
+
+    public ArrayList<Board> posibleMoves(){
+        ArrayList<Board> moves =  new  ArrayList<Board>();
+        Direction[] allDirections = {Direction.U, Direction.D, Direction.L, Direction.R};
+        for(int i = 0; i < blocks.length; ++i) {
+            for(Direction d : allDirections) {
+                Board b = this.clone();
+                if(b.movePiece(i, d))
+                    moves.add(b);
+            }
+        }
+        return moves;
+    }
+
+    @Override
+    public String toString(){
+        return toString(false);
+    }
+
+    public String toString(boolean mirror){
+        char[] s = new char[W*H];
+        for(int i = 0; i < s.length; ++i)
+            s[i] = ' ';
+        for(int i = 0; i < blocks.length; ++i) {
+            Block b = blocks[i];
+            for(int x = b.x; x < b.x + b.W(); ++x)
+                for(int y = b.y; y < b.y + b.H(); ++y)
+                    s[y*W + (mirror ? W-1-x: x)] = b.t.toString().charAt(0);
+        }// end loop blocks
+        return new String(s);
+    }
     static final int W = 4;
     static final int H = 5;
     Block[] blocks = new Block[10];

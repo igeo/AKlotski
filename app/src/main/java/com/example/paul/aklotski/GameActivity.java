@@ -89,6 +89,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         layoutBoard.requestLayout();
         TextView viewSteps = findViewById(R.id.steps);
         viewSteps.setText("step " + history.size());
+        int n = solver.solve(board);
+        viewSteps.setText(n + " steps to go");
     }
     public void movePiece(View v, Board.Direction direction)
     {
@@ -138,7 +140,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             int y1 = block.y * gridHeight + G;
             lp.setMargins(x1, y1, 0, 0);
             setLayoutParams(lp);
-            setText(block.t.toString());
+            //setText(block.t.toString());
         }
         int id;
         Block block;
