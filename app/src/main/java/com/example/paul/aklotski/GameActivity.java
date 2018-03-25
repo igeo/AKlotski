@@ -75,8 +75,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void restart() {
         history.clear();
-        String game =  GameManager.getGame(gameId);
-        board = new Board(game);
+        GameInfo game =  GameManager.getGame(gameId);
+        board = new Board(game.string);
         updateboard();
     }
     private void updateboard(){

@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
             TextView text = new TextView(this);
             text.setTextSize(32);
             text.setText("" + gid);
-            text.setPadding(5,0,5,0);
+            text.setPadding(20,0,20,0);
             row.addView(text);
 
             text = new TextView(this);
             text.setTextSize(32);
-            text.setText("-1" );
-            text.setPadding(5,0,5,0);
+            text.setText("" + GameManager.getGame(gid).par);
+            text.setPadding(20,0,20,0);
             row.addView(text);
 
             // Your best
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             text = new TextView(this);
             text.setTextSize(32);
             text.setText(best > 0 ? "" + best : "-");
-            text.setPadding(5,0,5,0);
+            text.setPadding(20,0,5,0);
             row.addView(text);
 
             row.setTag(Integer.valueOf(gid));

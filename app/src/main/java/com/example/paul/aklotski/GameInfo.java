@@ -9,8 +9,21 @@ import android.arch.persistence.room.PrimaryKey;
  */
 
 public class GameInfo extends Object {
+
+    GameInfo(String s, int p, String n) {
+        name =  n;
+        string = s;
+        par = p;
+    }
+    GameInfo(String s, int p) {
+        this(s, p, "");
+    }
+    GameInfo(String s) {
+        this(s, -1);
+    }
+
     @PrimaryKey
-    int String;
+    String string;
 
     @ColumnInfo
     int par;

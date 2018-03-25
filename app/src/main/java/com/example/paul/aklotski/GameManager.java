@@ -7,17 +7,17 @@ import java.util.ArrayList;
  */
 
 public class GameManager extends Object {
-    public static ArrayList<String> getAllGames() {
+    public static ArrayList<GameInfo> getAllGames() {
         init();
         return games;
     }
-    static ArrayList<String> games;
+    static ArrayList<GameInfo> games;
     public static int getNumOfGames() {
         init();
         return games.size();
     }
 
-    public static String getGame(int id) {
+    public static GameInfo getGame(int id) {
         init();
         return games.get(id);
     }
@@ -25,16 +25,15 @@ public class GameManager extends Object {
     {
         if(games != null)
             return;
-        games = new ArrayList<String>();
-        games.add(new String("KkHhkkHhHhHhPPHhP  P"));
-        games.add(new String("VKkVvkkvVHhVvPPvP  P"));
-        games.add(new String("VKkPvkkPVHhVvPVv Pv "));
-        games.add(new String("VKkPvkkPVHhVvPVv Pv "));
-        games.add(new String("PKkPPkkP Hh VVVVvvvv"));
-        games.add(new String("VKkPvkkPVHhPvVVP vv "));
-        games.add(new String("PHhPVKkVvkkvVPPVv  v"));
-        games.add(new String("VHhPvKkVVkkvvPVP Pv "));
-        games.add(new String("PVVVPvvvHhPPHhKk  kk"));
-        games.add(new String("PVVVPvvvHhHhPPKk  kk"));
+        games = new ArrayList<GameInfo>();
+        games.add(new GameInfo("KkHhkkHhHhHhPPHhP  P", 32));
+        games.add(new GameInfo("VKkVvkkvVHhVvPPvP  P", 116, "横刀立马"));
+        games.add(new GameInfo("VKkPvkkPVHhVvPVv Pv ", 64));
+        games.add(new GameInfo("PKkPPkkP Hh VVVVvvvv", 61));
+        games.add(new GameInfo("VKkPvkkPVHhPvVVP vv ", 95));
+        games.add(new GameInfo("PHhPVKkVvkkvVPPVv  v", 46));
+        games.add(new GameInfo("VHhPvKkVVkkvvPVP Pv ", 22));
+        games.add(new GameInfo("PVVVPvvvHhPPHhKk  kk", 124));
+        games.add(new GameInfo("PVVVPvvvHhHhPPKk  kk", 3));
     }
 }
