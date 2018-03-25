@@ -35,5 +35,6 @@ public class GameManager extends Object {
         games.add(new GameInfo("VHhPvKkVVkkvvPVP Pv ", 22));
         games.add(new GameInfo("PVVVPvvvHhPPHhKk  kk", 124));
         games.add(new GameInfo("PVVVPvvvHhHhPPKk  kk", 3));
+        games.add(new GameInfo("PPPVKkVvkkvV Hhv PHh", 179, "峰回路转"));
     }
 }
