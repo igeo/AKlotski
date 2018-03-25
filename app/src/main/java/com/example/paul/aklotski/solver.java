@@ -34,11 +34,12 @@ public class solver {
         progress.add(states);
         //google::dense_hash_set<unsigned long> seen; seen.set_empty_key(0);
         HashSet<String> seen = new HashSet<String>();
+        seen.add(start.toString());
 
         boolean debug = true;
         for(int i = 0; i < 300; ++i)
         {
-            if(debug) Log.d("solver", "==== Running step # " + (i + 1) + " ====");
+            //if(debug) Log.d("solver", "==== Running step # " + (i + 1) + " ====");
             progress.add(new ArrayList<Pair<Board,Integer>>());
             ArrayList<Pair<Board,Integer>> next = progress.get(progress.size()-1);  // new depth to explore
             ArrayList<Pair<Board,Integer>> current =  progress.get(progress.size()-2); // current depth
@@ -48,26 +49,29 @@ public class solver {
                 for(Board m : ms)
                 {
                     String hashable = m.toString();
-                    if(!seen.add(hashable) || !seen.add(m.toString(true)) ) // || !seen.insert(m.getMirror().getHashableL()).second)
+                    if(!seen.add(hashable)) // || !seen.insert(m.getMirror().getHashableL()).second)
                         continue; // donot loop
+                    String mirror = m.toString(true);
+                    if(!mirror.equals(hashable) && !seen.add(mirror))
+                        continue;
 
                     next.add(new  Pair<Board, Integer>(m,leaf_idx));
                     if(m.hasWon())
                     {
-                        Log.i("solver", "*** Solved at step " + (i+1));
+                        //Log.i("solver", "*** Solved at step " + (i+1));
                         //m.printRepr();
                         int N = 0;
                         for(ArrayList<Pair<Board,Integer>> v : progress)
                         N += v.size();
-                        Log.i("solver", "total serched size " + N );
+                        //Log.i("solver", "total serched size " + N );
                         return new Pair<Board, Integer>(back_trace(progress), i+1);// back_trace(progress);
                     }
                 }
             }
-            if(debug) Log.d("solver","==== total leafs " + next.size() );
+            //if(debug) Log.d("solver","==== total leafs " + next.size() );
             if(next.isEmpty())
             {
-                Log.i("solver","did not find solution after step " + (i+1));
+                //Log.i("solver","did not find solution after step " + (i+1));
                 break;
             }
         }
