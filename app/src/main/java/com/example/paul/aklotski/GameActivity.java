@@ -60,6 +60,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(v.getContext(), "restart", Toast.LENGTH_SHORT).show();
                 ((GameActivity)(v.getContext())).restartGame();
             }});
+        TextView viewSteps = findViewById(R.id.steps);
+        viewSteps.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "auto", Toast.LENGTH_SHORT).show();
+                ((GameActivity)(v.getContext())).autoMove();
+            }});
     }
 
     @Override
@@ -89,8 +95,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         layoutBoard.requestLayout();
         TextView viewSteps = findViewById(R.id.steps);
         viewSteps.setText("step " + history.size());
-        int n = solver.solve(board);
-        viewSteps.setText(n + " steps to go");
     }
     public void movePiece(View v, Board.Direction direction)
     {
@@ -104,16 +108,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     AppDatabase.class, "player_database").allowMainThreadQueries().build();
             GamePlayed game = new GamePlayed();
             game.gameId = gameId;
-            game.won = true;
+            game.won = usedHelp ? false : true;
             game.steps = history.size();
             db.MyGameDao().insert(game);
         }
         updateboard();
     }
+    public void autoMove(){
+        if(board.hasWon())
+            return;
+        //while(!board.hasWon()) {
+            history.add(board);
+            board = solver.solve(board).first;
+            updateboard();
+        usedHelp = true;
+    }
     Board board;
     ArrayList<Board> history = new ArrayList<Board>();
     int gameId;
     Point windowSize = new Point();
+    boolean usedHelp = false;
 }
 
 // one block of the game

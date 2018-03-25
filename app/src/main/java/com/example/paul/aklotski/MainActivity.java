@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
             List<GamePlayed> games = db.MyGameDao().loadAllByGameId(gid);
             int best = -1;
             for(GamePlayed game : games){
+                if(!game.won)
+                    continue;
                 if(best >= 0) {
                     best = Math.min(best, game.steps);
                 }else

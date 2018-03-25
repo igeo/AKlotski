@@ -11,8 +11,23 @@ import java.util.HashSet;
  */
 
 public class solver {
-    
-    static int solve(Board start) {
+    static Board back_trace(ArrayList<ArrayList<Pair<Board,Integer>>> progress)
+    {
+        ArrayList<Board> solution = new  ArrayList<Board>();
+        Board s;// = progress.back().back().first;
+        int idx= progress.get(progress.size()-1).size()-1;
+        for(int depth = progress.size() - 1; depth >= 0; --depth)
+        {
+            ArrayList<Pair<Board,Integer>>front = progress.get(depth);
+            Pair<Board,Integer> node = front.get(idx);
+            solution.add(node.first);
+            idx = node.second;
+        }
+        return solution.get(solution.size() - 2);
+    }
+    static Pair<Board, Integer> solve(Board start) {
+        if(start.hasWon())
+            return new Pair<Board, Integer>(start, 0);
         ArrayList<ArrayList<Pair<Board,Integer>>> progress = new ArrayList<ArrayList<Pair<Board,Integer>>>(); // each vector is a step, index is parent location
         ArrayList<Pair<Board,Integer>> states = new ArrayList<Pair<Board,Integer>>();
         states.add(new Pair<Board,Integer>(start,0));
@@ -45,7 +60,7 @@ public class solver {
                         for(ArrayList<Pair<Board,Integer>> v : progress)
                         N += v.size();
                         Log.i("solver", "total serched size " + N );
-                        return i+1;// back_trace(progress);
+                        return new Pair<Board, Integer>(back_trace(progress), i+1);// back_trace(progress);
                     }
                 }
             }
@@ -56,6 +71,6 @@ public class solver {
                 break;
             }
         }
-        return -1;// std::vector<State>();
+        return new Pair<Board, Integer>(start, -1);// no solution
     } // end of solve
 }
