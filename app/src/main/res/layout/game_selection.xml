@@ -24,18 +24,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Game"
+                    android:padding="10dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Par"
+                    android:textAlignment="center"
+                    android:padding="10dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="You"
+                    android:padding="10dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </TableRow>
 

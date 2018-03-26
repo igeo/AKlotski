@@ -6,6 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -48,13 +49,15 @@ public class MainActivity extends AppCompatActivity {
             TextView text = new TextView(this);
             text.setTextSize(32);
             text.setText("" + gid);
-            text.setPadding(20,0,20,0);
+            text.setPadding(0,0,20,0);
+            text.setGravity(Gravity.RIGHT);
             row.addView(text);
 
             text = new TextView(this);
             text.setTextSize(32);
             text.setText("" + GameManager.getGame(gid).par);
             text.setPadding(20,0,20,0);
+            text.setGravity(Gravity.RIGHT);
             row.addView(text);
 
             // Your best
@@ -72,6 +75,21 @@ public class MainActivity extends AppCompatActivity {
             text.setTextSize(32);
             text.setText(best > 0 ? "" + best : "-");
             text.setPadding(20,0,5,0);
+            if(best > 0) {
+                text.setText("" + best);
+                text.setGravity(Gravity.RIGHT);
+            } else {
+                text.setText("-" );
+                text.setGravity(Gravity.CENTER_HORIZONTAL);
+            }
+
+            row.addView(text);
+
+            text = new TextView(this);
+            text.setTextSize(24);
+            text.setText(GameManager.getGame(gid).name);
+            text.setPadding(20,0,20,0);
+            text.setGravity(Gravity.RIGHT);
             row.addView(text);
 
             row.setTag(Integer.valueOf(gid));
