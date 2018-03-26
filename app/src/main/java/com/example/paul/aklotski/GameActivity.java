@@ -108,7 +108,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     AppDatabase.class, "player_database").allowMainThreadQueries().build();
             GamePlayed game = new GamePlayed();
             game.gameId = gameId;
-            game.won = usedHelp ? false : true;
+            game.won = usedAutoMove ? false : true;
             game.steps = history.size();
             db.MyGameDao().insert(game);
         }
@@ -117,20 +117,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void autoMove(){
         if(board.hasWon())
             return;
-        //while(!board.hasWon()) {
-        history.add(board);
-        if(solution.indexOf(board) < 0)
+        if(solver.IndexOf(solution, board) < 0) {
+            TextView viewSteps = findViewById(R.id.steps);
+            viewSteps.setText("...");
             solution = solver.solve(board);
-        board = solution.get(solution.indexOf(board)-1); // winning positoin at 0
+        }
+        history.add(board);
+        board = solution.get(solver.IndexOf(solution, board)-1); // winning positoin at 0
         updateboard();
-        usedHelp = true;
+        usedAutoMove = true;
     }
     Board board;
     ArrayList<Board> history = new ArrayList<Board>();
     int gameId;
     Point windowSize = new Point();
-    boolean usedHelp = false;
-    ArrayList<Board> solution = new  ArrayList<Board>();
+    boolean usedAutoMove = false; // used automatic move
+    ArrayList<Board> solution = new  ArrayList<Board>(); // path from wining postion to current
 }
 
 // one block of the game

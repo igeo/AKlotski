@@ -83,4 +83,13 @@ public class solver {
         ret.add(start);
         return ret; // no solution
     } // end of solve
+
+    static int IndexOf(ArrayList<Board> solution, Board target)
+    {
+        String targetString = target.toString();
+        for(int i = 0; i < solution.size(); ++i)
+            if(solution.get(i).toString().equals(targetString))
+                return i;
+        return -1;
+    }
 }
