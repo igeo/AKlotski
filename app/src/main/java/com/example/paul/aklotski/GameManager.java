@@ -31,7 +31,7 @@ public class GameManager extends Object {
         games.add(new GameInfo("VKkPvkkPVHhVvPVv Pv ", 64));
         games.add(new GameInfo("PKkPPkkP Hh VVVVvvvv", 61));
         games.add(new GameInfo("VKkPvkkPVHhPvVVP vv ", 95));
-        games.add(new GameInfo("PHhPVKkVvkkvVPPVv  v", 46));
+        games.add(new GameInfo("PHhPVKkVvkkvVPPVv  v", 13));
         games.add(new GameInfo("VHhPvKkVVkkvvPVP Pv ", 22));
         games.add(new GameInfo("PVVVPvvvHhPPHhKk  kk", 124));
         games.add(new GameInfo("PVVVPvvvHhHhPPKk  kk", 3));
