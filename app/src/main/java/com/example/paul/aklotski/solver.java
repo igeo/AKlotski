@@ -11,7 +11,7 @@ import java.util.HashSet;
  */
 
 public class solver {
-    static Board back_trace(ArrayList<ArrayList<Pair<Board,Integer>>> progress)
+    static ArrayList<Board> back_trace(ArrayList<ArrayList<Pair<Board,Integer>>> progress)
     {
         ArrayList<Board> solution = new  ArrayList<Board>();
         Board s;// = progress.back().back().first;
@@ -23,11 +23,15 @@ public class solver {
             solution.add(node.first);
             idx = node.second;
         }
-        return solution.get(solution.size() - 2);
+        return solution; // backward
     }
-    static Pair<Board, Integer> solve(Board start) {
-        if(start.hasWon())
-            return new Pair<Board, Integer>(start, 0);
+    static ArrayList<Board> solve(Board start) {
+        /*
+        if(start.hasWon()) {
+            ArrayList<Board> ret = new ArrayList<Board>();
+            ret.add(start);
+            return ret;
+        }*/
         ArrayList<ArrayList<Pair<Board,Integer>>> progress = new ArrayList<ArrayList<Pair<Board,Integer>>>(); // each vector is a step, index is parent location
         ArrayList<Pair<Board,Integer>> states = new ArrayList<Pair<Board,Integer>>();
         states.add(new Pair<Board,Integer>(start,0));
@@ -64,7 +68,7 @@ public class solver {
                         for(ArrayList<Pair<Board,Integer>> v : progress)
                         N += v.size();
                         //Log.i("solver", "total serched size " + N );
-                        return new Pair<Board, Integer>(back_trace(progress), i+1);// back_trace(progress);
+                        return back_trace(progress);// back_trace(progress);
                     }
                 }
             }
@@ -75,6 +79,8 @@ public class solver {
                 break;
             }
         }
-        return new Pair<Board, Integer>(start, -1);// no solution
+        ArrayList<Board> ret = new ArrayList<Board>();
+        ret.add(start);
+        return ret; // no solution
     } // end of solve
 }

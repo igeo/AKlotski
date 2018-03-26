@@ -118,9 +118,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if(board.hasWon())
             return;
         //while(!board.hasWon()) {
-            history.add(board);
-            board = solver.solve(board).first;
-            updateboard();
+        history.add(board);
+        if(solution.indexOf(board) < 0)
+            solution = solver.solve(board);
+        board = solution.get(solution.indexOf(board)-1); // winning positoin at 0
+        updateboard();
         usedHelp = true;
     }
     Board board;
@@ -128,6 +130,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     int gameId;
     Point windowSize = new Point();
     boolean usedHelp = false;
+    ArrayList<Board> solution = new  ArrayList<Board>();
 }
 
 // one block of the game
