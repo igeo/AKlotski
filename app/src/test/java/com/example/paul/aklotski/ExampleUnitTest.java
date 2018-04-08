@@ -14,10 +14,12 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
     @Test
-    public void solver() throws Exception {
-        Board start = new Board(new String("PVVVPvvvHhHhPPKk  kk"));
-        int steps = solver.solve(start).second;
+    public void solver_isCorrect() throws Exception {
+        //Profiler.start("Solver");
+        Board start = new Board("VKkVvkkvVHhVvPPvP  P");
+        int steps = solver.solve(start).size() - 1;
         assertEquals(116, steps);
     }
 }

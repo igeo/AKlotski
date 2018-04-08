@@ -1,7 +1,7 @@
 package com.example.paul.aklotski;
 
 import android.util.Log;
-import android.util.Pair;
+import android.support.v4.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashSet;
