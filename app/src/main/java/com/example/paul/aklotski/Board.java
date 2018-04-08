@@ -45,7 +45,7 @@ public class Board extends Object {
         return cloned;
     }
     enum Direction {U, D, L, R, None};
-    public boolean movePiece(int index, Direction d)
+    public ArrayList<Direction> posibleMoveDirections(int index)
     {
         // pupulate board;
         int [][] board = new int [H][W];
@@ -96,7 +96,12 @@ public class Board extends Object {
             if (open)
                 direction.add(Direction.R);
         }
+        return direction;
+    }
 
+    public boolean movePiece(int index, Direction d)
+    {
+        ArrayList<Direction> direction = posibleMoveDirections(index);
         if(d == Direction.None && direction.size() > 0) // click, pick one passible move
         {
             Random rand = new Random();
@@ -108,6 +113,7 @@ public class Board extends Object {
             if(!direction.contains(d))
                 return false;
         }
+        Block b = blocks[index];
         switch (d) {
             case U: --b.y; break;
             case D: ++b.y; break;
@@ -130,9 +136,9 @@ public class Board extends Object {
 
     public ArrayList<Board> posibleMoves(){
         ArrayList<Board> moves =  new  ArrayList<Board>();
-        Direction[] allDirections = {Direction.U, Direction.D, Direction.L, Direction.R};
         for(int i = 0; i < blocks.length; ++i) {
-            for(Direction d : allDirections) {
+            ArrayList<Direction> directions = posibleMoveDirections(i);
+            for(Direction d : directions) {
                 Board b = this.clone();
                 if(b.movePiece(i, d))
                     moves.add(b);
